@@ -1,0 +1,18 @@
+[
+  {
+    "_comment": "Add your personal Hanoi favorites here. Schema matches the shops table.",
+    "_comment_2": "Fields: name (required), name_vi, lat, lng, address, price_level (1-4), tags[], phone, source_url",
+    "_comment_3": "The seed script will upsert these via google_place_id (if looked up) or (lat,lng,name) otherwise.",
+    "_comment_4": "Example entry below — delete this object and add your real shops."
+  },
+  {
+    "name": "Example Cafe",
+    "name_vi": "Cà phê Ví dụ",
+    "lat": 21.028511,
+    "lng": 105.854167,
+    "address": "Hoan Kiem District, Hanoi",
+    "price_level": 2,
+    "tags": ["quiet", "wifi", "specialty"],
+    "source": "curated_manual"
+  }
+]

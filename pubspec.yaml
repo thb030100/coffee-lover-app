@@ -1,0 +1,48 @@
+name: coffee_lover
+description: "Bumble-style coffee shop discovery for Hanoi"
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # Backend
+  supabase_flutter: ^2.8.0
+
+  # Auth
+  sign_in_with_apple: ^6.1.2
+  google_sign_in: ^6.2.2
+
+  # State management
+  flutter_riverpod: ^2.6.1
+
+  # Swipe deck
+  appinio_swiper: ^2.1.1
+
+  # Location + maps
+  geolocator: ^13.0.2
+  map_launcher: ^3.5.0
+
+  # Networking + env
+  http: ^1.2.2
+  flutter_dotenv: ^5.2.1
+
+  # Image + UI helpers
+  cached_network_image: ^3.4.1
+  carousel_slider: ^5.0.0
+  url_launcher: ^6.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - .env
