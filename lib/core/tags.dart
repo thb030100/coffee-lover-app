@@ -38,6 +38,9 @@ const List<String> kShopTagVocabulary = [
   'open_early',
   'pet_friendly',
   'cash_only',
+  'smoking_allowed',
+  'car_parking',
+  'cake',
 ];
 
 bool isKnownTag(String tag) => kShopTagVocabulary.contains(tag);

@@ -5,8 +5,22 @@ import 'package:map_launcher/map_launcher.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/gradient_button.dart';
+import '../../core/theme.dart';
 import '../../models/shop.dart';
 import '../../services/places_service.dart';
+
+class _Amenity {
+  final IconData iconOn;
+  final IconData iconOff;
+  final String label;
+  final bool active;
+  const _Amenity({
+    required this.iconOn,
+    required this.iconOff,
+    required this.label,
+    required this.active,
+  });
+}
 
 class ShopDetailSheet extends StatelessWidget {
   const ShopDetailSheet({super.key, required this.shop});
@@ -82,6 +96,7 @@ class ShopDetailSheet extends StatelessWidget {
                     ),
                   const SizedBox(height: 12),
                   _metaRow(context),
+                  _amenitiesSection(context),
                   const SizedBox(height: 16),
                   if (shop.address != null) _row(Icons.place, shop.address!),
                   if (shop.phone != null) _row(Icons.phone, shop.phone!),
@@ -128,6 +143,102 @@ class ShopDetailSheet extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  List<_Amenity> _buildAmenities() => [
+        _Amenity(
+          iconOn: Icons.wifi,
+          iconOff: Icons.wifi_off,
+          label: 'Wi-Fi',
+          active: shop.tags.contains('wifi'),
+        ),
+        _Amenity(
+          iconOn: Icons.smoking_rooms,
+          iconOff: Icons.smoke_free,
+          label: 'Smoking',
+          active: shop.tags.contains('smoking_allowed'),
+        ),
+        _Amenity(
+          iconOn: Icons.pets,
+          iconOff: Icons.pets,
+          label: 'Pets OK',
+          active: shop.tags.contains('pet_friendly'),
+        ),
+        _Amenity(
+          iconOn: Icons.cake,
+          iconOff: Icons.cake,
+          label: 'Cakes',
+          active: shop.tags.contains('cake') || shop.tags.contains('bakery'),
+        ),
+        _Amenity(
+          iconOn: Icons.local_parking,
+          iconOff: Icons.local_parking,
+          label: 'Parking',
+          active: shop.tags.contains('car_parking'),
+        ),
+      ];
+
+  Widget _amenitiesSection(BuildContext context) {
+    final amenities = _buildAmenities();
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Amenities',
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              for (int i = 0; i < amenities.length; i++) ...[
+                if (i > 0) const SizedBox(width: 8),
+                Expanded(child: _amenityTile(context, amenities[i])),
+              ],
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _amenityTile(BuildContext context, _Amenity amenity) {
+    final activeColor = kTextPrimary;
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+      decoration: BoxDecoration(
+        color: amenity.active
+            ? const Color(0xFFFDF0E0)
+            : Colors.grey.withValues(alpha: 0.06),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: amenity.active ? kBorder : Colors.black12,
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            amenity.active ? amenity.iconOn : amenity.iconOff,
+            size: 22,
+            color: amenity.active ? activeColor : Colors.black26,
+          ),
+          const SizedBox(height: 5),
+          Text(
+            amenity.label,
+            style: TextStyle(
+              fontSize: 10,
+              color: amenity.active ? kTextPrimary : Colors.black38,
+              fontWeight:
+                  amenity.active ? FontWeight.w600 : FontWeight.normal,
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 2,
+          ),
+        ],
+      ),
     );
   }
 
