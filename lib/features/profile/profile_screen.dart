@@ -42,10 +42,7 @@ class ProfileScreen extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            Text(
-              user?.email ?? 'Signed in',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
+            _ProfileHeader(email: user?.email),
             const SizedBox(height: 16),
 
             // Preferences summary card
@@ -70,7 +67,7 @@ class ProfileScreen extends ConsumerWidget {
                 );
               },
               loading: () => const SizedBox.shrink(),
-              error: (_, __) => const SizedBox.shrink(),
+              error: (_, _) => const SizedBox.shrink(),
             ),
 
             const SizedBox(height: 16),
@@ -84,7 +81,7 @@ class ProfileScreen extends ConsumerWidget {
                     padding: EdgeInsets.symmetric(vertical: 24),
                     child: Text(
                       'Swipe up on a card to save it here.',
-                      style: TextStyle(color: Colors.black54),
+                      style: TextStyle(color: kTextSecondary),
                     ),
                   );
                 }
@@ -121,6 +118,47 @@ class ProfileScreen extends ConsumerWidget {
   }
 }
 
+class _ProfileHeader extends StatelessWidget {
+  const _ProfileHeader({required this.email});
+  final String? email;
+
+  @override
+  Widget build(BuildContext context) {
+    final e = email ?? '';
+    final initial = e.isNotEmpty ? e[0].toUpperCase() : '?';
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 28,
+            backgroundColor: kIgPink.withValues(alpha: 0.12),
+            child: Text(
+              initial,
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                color: kIgPink,
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Text(
+              e.isNotEmpty ? e : 'Signed in',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(color: kTextSecondary),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _SavedTile extends StatelessWidget {
   const _SavedTile({required this.shop});
   final Shop shop;
@@ -131,10 +169,17 @@ class _SavedTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
         title: Text(shop.displayName),
-        subtitle: Text(shop.address ?? ''),
+        subtitle: Text(
+          shop.address ?? '',
+          style: const TextStyle(color: kTextSecondary),
+        ),
         trailing: shop.priceLevel == null
             ? null
-            : Text('₫' * shop.priceLevel!),
+            : Text(
+                '₫' * shop.priceLevel!,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w600, color: kTextPrimary),
+              ),
         onTap: () => showModalBottomSheet(
           context: context,
           isScrollControlled: true,

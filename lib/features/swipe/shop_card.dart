@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/tags.dart';
 import '../../models/shop.dart';
 import '../../services/places_service.dart';
 
@@ -122,7 +123,7 @@ class ShopCard extends StatelessWidget {
           color: Colors.white.withValues(alpha: 0.15),
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Text('#${t.replaceAll('_', ' ')}',
+        child: Text('#${displayTag(t)}',
             style: const TextStyle(color: Colors.white, fontSize: 11)),
       );
 }

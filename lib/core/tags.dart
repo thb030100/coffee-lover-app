@@ -44,3 +44,51 @@ const List<String> kShopTagVocabulary = [
 ];
 
 bool isKnownTag(String tag) => kShopTagVocabulary.contains(tag);
+
+/// Human-readable display names for tags shown in the UI.
+const Map<String, String> kTagDisplayNames = {
+  'quiet': 'Quiet',
+  'lively': 'Lively',
+  'cozy': 'Cozy',
+  'minimalist': 'Minimalist',
+  'traditional': 'Traditional',
+  'instagrammable': 'Instagrammable',
+  'wifi': 'Wi-Fi',
+  'power_outlets': 'Power Outlets',
+  'work_friendly': 'Work Friendly',
+  'meeting_friendly': 'Meeting Friendly',
+  'outdoor': 'Outdoor',
+  'rooftop': 'Rooftop',
+  'garden': 'Garden',
+  'alleyway': 'Alleyway',
+  'view': 'With a View',
+  'specialty': 'Specialty',
+  'vietnamese_traditional': 'Vietnamese Style',
+  'egg_coffee': 'Egg Coffee',
+  'coconut_coffee': 'Coconut Coffee',
+  'drip_phin': 'Drip Phin',
+  'pour_over': 'Pour Over',
+  'espresso': 'Espresso',
+  'food': 'Food',
+  'brunch': 'Brunch',
+  'bakery': 'Bakery',
+  'tea': 'Tea',
+  'open_late': 'Open Late',
+  'open_early': 'Opens Early',
+  'pet_friendly': 'Pet Friendly',
+  'cash_only': 'Cash Only',
+  'smoking_allowed': 'Smoking OK',
+  'car_parking': 'Parking',
+  'cake': 'Cakes',
+};
+
+/// Returns a display-ready label for [tag].
+/// Falls back to title-casing the snake_case identifier.
+String displayTag(String tag) {
+  if (kTagDisplayNames.containsKey(tag)) return kTagDisplayNames[tag]!;
+  return tag
+      .replaceAll('_', ' ')
+      .split(' ')
+      .map((w) => w.isEmpty ? '' : '${w[0].toUpperCase()}${w.substring(1)}')
+      .join(' ');
+}

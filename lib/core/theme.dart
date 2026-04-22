@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // Hybrid palette: coffee-warm surfaces (UI UX Pro Max) + Instagram gradient
 // accents on primary interactive elements (heart swipe, CTAs, active states).
@@ -25,6 +26,22 @@ const igGradient = LinearGradient(
 
 ThemeData buildCoffeeTheme() {
   final base = ThemeData.light(useMaterial3: true);
+
+  // Plus Jakarta Sans for all headline / display / title styles.
+  // Inter for body and label styles — crisp and readable.
+  final plusJakarta = GoogleFonts.plusJakartaSansTextTheme(base.textTheme);
+  final textTheme = plusJakarta.copyWith(
+    bodyLarge:   GoogleFonts.inter(textStyle: plusJakarta.bodyLarge),
+    bodyMedium:  GoogleFonts.inter(textStyle: plusJakarta.bodyMedium),
+    bodySmall:   GoogleFonts.inter(textStyle: plusJakarta.bodySmall),
+    labelLarge:  GoogleFonts.inter(textStyle: plusJakarta.labelLarge),
+    labelMedium: GoogleFonts.inter(textStyle: plusJakarta.labelMedium),
+    labelSmall:  GoogleFonts.inter(textStyle: plusJakarta.labelSmall),
+  ).apply(
+    bodyColor: kTextPrimary,
+    displayColor: kTextPrimary,
+  );
+
   return base.copyWith(
     colorScheme: ColorScheme.fromSeed(
       seedColor: kIgPink,
@@ -36,20 +53,17 @@ ThemeData buildCoffeeTheme() {
       onSurface: kTextPrimary,
     ),
     scaffoldBackgroundColor: kBackground,
-    appBarTheme: const AppBarTheme(
+    textTheme: textTheme,
+    appBarTheme: AppBarTheme(
       backgroundColor: kBackground,
       foregroundColor: kTextPrimary,
       elevation: 0,
       centerTitle: true,
-      titleTextStyle: TextStyle(
+      titleTextStyle: GoogleFonts.plusJakartaSans(
         color: kTextPrimary,
         fontSize: 20,
         fontWeight: FontWeight.w700,
       ),
-    ),
-    textTheme: base.textTheme.apply(
-      bodyColor: kTextPrimary,
-      displayColor: kTextPrimary,
     ),
     cardTheme: CardThemeData(
       color: kCardSurface,
@@ -69,10 +83,30 @@ ThemeData buildCoffeeTheme() {
     chipTheme: ChipThemeData(
       backgroundColor: kBackground,
       side: const BorderSide(color: kBorder),
-      labelStyle: const TextStyle(color: kTextPrimary, fontSize: 12),
+      labelStyle: GoogleFonts.inter(color: kTextPrimary, fontSize: 12),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
     ),
     dividerColor: kBorder,
+    navigationBarTheme: NavigationBarThemeData(
+      backgroundColor: kSurface,
+      indicatorColor: kIgPink.withValues(alpha: 0.12),
+      iconTheme: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return const IconThemeData(color: kIgPink);
+        }
+        return const IconThemeData(color: kTextSecondary);
+      }),
+      labelTextStyle: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return GoogleFonts.inter(
+            color: kIgPink,
+            fontWeight: FontWeight.w600,
+            fontSize: 12,
+          );
+        }
+        return GoogleFonts.inter(color: kTextSecondary, fontSize: 12);
+      }),
+    ),
   );
 }

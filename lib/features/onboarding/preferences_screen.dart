@@ -231,7 +231,7 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
             children: tags.map((tag) {
               final selected = _selectedTags.contains(tag);
               return FilterChip(
-                label: Text(_displayTag(tag)),
+                label: Text(displayTag(tag)),
                 selected: selected,
                 selectedColor: kIgPink.withValues(alpha: 0.15),
                 checkmarkColor: kIgPink,
@@ -246,9 +246,6 @@ class _PreferencesScreenState extends ConsumerState<PreferencesScreen> {
     );
   }
 
-  String _displayTag(String tag) {
-    return tag.replaceAll('_', ' ');
-  }
 
   // ── Page 3: Distance ──
 

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -83,7 +84,7 @@ class TodaysPickScreen extends ConsumerWidget {
                     Expanded(
                       flex: 3,
                       child: photoUrl != null
-                          ? Image.network(photoUrl, fit: BoxFit.cover)
+                          ? CachedNetworkImage(imageUrl: photoUrl, fit: BoxFit.cover)
                           : Container(
                               color: kBorder,
                               child: const Icon(Icons.local_cafe,
