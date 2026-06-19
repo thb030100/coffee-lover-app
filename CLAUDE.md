@@ -4,9 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-Early scaffold. The Flutter iOS app shell has NOT been generated yet (no `pubspec.yaml`, no `ios/` or `android/`). Only pure-Dart library code and Supabase SQL exist. Running `flutter create .` against this directory is the expected next step — it will generate the platform folders without overwriting files under `lib/`, `supabase/`, or `tools/`.
+MVP client is scaffolded and largely implemented. `pubspec.yaml` and the platform folders (`ios/`, `android/`, `macos/`, `web/`, `linux/`, `windows/`) all exist. Implemented features: Apple/Google sign-in, preferences onboarding, the swipe deck with geolocation + local filtering, Today's Pick, the saved-shops profile, and the shop detail sheet.
 
-The approved product plan — scope, phased roadmap, data model rationale, post-MVP partner portal design — lives at `~/.claude/plans/agile-fluttering-petal.md`. Read it before proposing architectural changes.
+Not yet done before it runs end-to-end: a live Supabase project with the `supabase/migrations/` applied, a real `.env` (copied from `.env.example`), and a seeded `shops` table (`dart run tools/seed_hanoi.dart`). The Flutter toolchain must be installed locally to build, analyze, and test.
+
+The approved product plan — scope, phased roadmap, data model rationale, post-MVP partner portal design — lives at `~/.claude/plans/agile-fluttering-petal.md` (outside this repo; keep a copy when working on a fresh machine). Read it before proposing architectural changes.
 
 ## Commands
 
@@ -67,7 +69,7 @@ Partner portal     ──▶ partner_submissions   ──▶ Supabase.shops   (p
 
 After every major change — completing a phase from the plan, finishing a feature, landing a non-trivial refactor — commit and push to GitHub. "Major" means something you'd want to roll back to if the next change breaks things; don't commit after every individual file edit.
 
-This repo is not yet a git repository or connected to GitHub. First time only: `git init`, create the remote, `git remote add origin …`, push `main`. After that, the loop is `git add` → `git commit -m "…"` → `git push`. Ask before force-pushing or pushing to `main` directly once branch protection is in place.
+This repo is connected to GitHub (`origin`, default branch `main`). The loop is `git add` → `git commit -m "…"` → `git push`. Ask before force-pushing or pushing to `main` directly once branch protection is in place.
 
 ## What NOT to do
 
