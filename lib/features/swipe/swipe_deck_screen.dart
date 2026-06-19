@@ -41,6 +41,20 @@ class _SwipeDeckScreenState extends ConsumerState<SwipeDeckScreen> {
     }
   }
 
+  Future<void> _recordSwipe(
+      DeckController ctrl, Shop shop, SwipeDirection dir) async {
+    try {
+      await ctrl.recordSwipe(shop, dir);
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Couldn't save that swipe — check your connection"),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(deckControllerProvider);
@@ -101,7 +115,7 @@ class _SwipeDeckScreenState extends ConsumerState<SwipeDeckScreen> {
                 final dir = _mapDirection(activity);
                 if (dir == null) return;
                 final shop = state.shops[prev];
-                ctrl.recordSwipe(shop, dir);
+                _recordSwipe(ctrl, shop, dir);
               },
               onEnd: () {
                 ScaffoldMessenger.of(context).showSnackBar(

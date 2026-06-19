@@ -45,10 +45,16 @@ class ShopRepository {
       'direction': swipeDirectionToDb(direction),
     });
     if (direction == SwipeDirection.up) {
-      await _client.from('saved_shops').upsert({
-        'user_id': userId,
-        'shop_id': shopId,
-      });
+      // DO NOTHING on conflict: re-saving an already-saved shop is a no-op and
+      // keeps the original saved_at. Avoids the ON CONFLICT DO UPDATE path,
+      // which saved_shops has no RLS update policy for.
+      await _client.from('saved_shops').upsert(
+        {
+          'user_id': userId,
+          'shop_id': shopId,
+        },
+        ignoreDuplicates: true,
+      );
     }
   }
 
@@ -79,12 +85,14 @@ class ShopRepository {
     return UserPreferences.fromJson(prefs as Map<String, dynamic>);
   }
 
-  /// Upsert user preferences into profiles.preferences jsonb column.
+  /// Update the user's preferences in profiles.preferences jsonb column.
+  /// The profile row is created by the on_auth_user_created trigger, so this is
+  /// always an UPDATE — an upsert would emit INSERT ... ON CONFLICT, which
+  /// profiles has no RLS insert policy for and would be rejected.
   Future<void> savePreferences(String userId, UserPreferences prefs) async {
-    await _client.from('profiles').upsert({
-      'id': userId,
+    await _client.from('profiles').update({
       'preferences': prefs.toJson(),
-    });
+    }).eq('id', userId);
   }
 
   Future<Shop?> mostRecentRightSwipe(String userId) async {
